@@ -15,7 +15,7 @@
 <petclinic:bodyHeader menuName="vets"/>
 <div class="container-fluid">
     <div class="container xd-container">
-        <h2>Veterinarians</h2>
+        <h2>Pedestrians</h2>
 
         <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
                           pageable="false" info="false">
