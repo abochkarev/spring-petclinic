@@ -416,7 +416,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<warName>petclinic</warName>
+					<warName>spring-petclinic-1.0.0-SNAPSHOT</warName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -460,8 +460,10 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.0</version>
 				<configuration>
-					<server>tomcat-development-server</server>
-					<port>9966</port>
+					<url>http://172.16.167.152:8080/manager/text</url>
+					<server>TomcatServer</server>
+					<username>admin</username>
+					<password>password</password>
 					<path>/petclinic</path>
 				</configuration>
 			</plugin>
