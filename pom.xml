@@ -464,6 +464,7 @@
 					<server>TomcatServer</server>
 					<username>admin</username>
 					<password>password</password>
+					<update>true</update>
 					<path>/petclinic</path>
 				</configuration>
 			</plugin>
