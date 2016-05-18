@@ -1,23 +1,23 @@
-FROM ubuntu:14.04
-RUN apt-get update && apt-get -y upgrade
+FROM java:8-jdk
+MAINTAINER Artem Silenkov <asilenkov@mirantis.net>
 
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository ppa:webupd8team/java
-RUN apt-get -y update
+RUN apt-get update && \ 
+    apt-get update --fix-missing && \ 
+    apt-get install -y wget
 
-# Accept the license
-RUN echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 boolean true" | debconf-set-selections
+ENV JETTY_VERSION 9.3.0
+ENV RELEASE_DATE v20150612
+RUN wget http://download.eclipse.org/jetty/stable-9/dist/jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
+    tar -xzvf jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
+    rm -rf jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
+    mv jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}/ /opt/jetty
 
-RUN apt-get -y install oracle-java7-installer
+RUN useradd jetty && \
+    chown -R jetty:jetty /opt/jetty && \
+    rm -rf /opt/jetty/webapps.demo
 
-# Here comes the tomcat installation
-RUN apt-get -y install tomcat7
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/default/tomcat7
+WORKDIR /opt/jetty
+CMD ["java", "-jar", "start.jar", "jetty.home=/opt/jetty"]
 
-# Expose the default tomcat port
-EXPOSE 8080
+ADD target/petclinic.war /opt/jetty/webapps/petclinic.war 
 
-ADD target/petclinic.war /var/lib/tomcat7/webapps/petclinic.war 
-
-# Start the tomcat (and leave it hanging)
-CMD service tomcat7 start && tail -f /var/lib/tomcat7/logs/catalina.out
