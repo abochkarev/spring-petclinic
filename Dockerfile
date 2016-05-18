@@ -3,7 +3,7 @@ MAINTAINER Artem Silenkov (asilenkov@mirantis.com)
 
 RUN apt-get update
 
-apt-get install wget
+RUN apt-get install wget
 
 ENV CATALINA_HOME /tomcat
 
