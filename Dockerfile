@@ -1,23 +1,23 @@
-FROM java:8-jdk
-MAINTAINER Artem Silenkov <asilenkov@mirantis.net>
+FROM     ubuntu:14.04
+MAINTAINER Artem Silenkov (asilenkov@mirantis.com) 
 
-RUN apt-get update && \ 
-    apt-get update --fix-missing && \ 
-    apt-get install -y wget
+RUN apt-get update
 
-ENV JETTY_VERSION 9.3.8
-ENV RELEASE_DATE v20160314
-RUN wget http://download.eclipse.org/jetty/stable-9/dist/jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
-    tar -xzvf jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
-    rm -rf jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}.tar.gz && \
-    mv jetty-distribution-${JETTY_VERSION}.${RELEASE_DATE}/ /opt/jetty
+ENV TOMCAT_VERSION 7.0.54
+ENV CATALINA_HOME /tomcat
 
-RUN useradd jetty && \
-    chown -R jetty:jetty /opt/jetty && \
-    rm -rf /opt/jetty/webapps.demo
+# INSTALL TOMCAT
+RUN wget http://archive.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O tomcat.tar.gz
+RUN tar zxf tomcat.tar.gz && rm tomcat.tar.gz && mv apache-tomcat* tomcat
 
-WORKDIR /opt/jetty
-CMD ["java", "-jar", "start.jar", "jetty.home=/opt/jetty"]
+ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
+ADD run.sh /run.sh
+RUN chmod +x /*.sh
 
-ADD target/petclinic.war /opt/jetty/webapps/petclinic.war 
+ADD target/petclinic.war /tomcat/webapps/petclinic.war
+
+CMD ["/run.sh"]
+
+EXPOSE 8080
+CMD    ["/usr/sbin/sshd", "-D"]
 
