@@ -15,7 +15,7 @@ RUN rm -rf /tomcat/webapps/*
 
 ADD target/petclinic.war /tomcat/webapps/petclinic.war
 
-CMD ["/tomcat/bin/startup.sh"]
+CMD ["/tomcat/bin/catalina.sh", "run"]
 
 EXPOSE 8080
 
