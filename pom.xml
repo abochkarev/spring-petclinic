@@ -378,14 +378,17 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <server>tomcat-development-server</server>
-                    <port>9966</port>
-                    <path>/petclinic</path>
-                </configuration>
+		<groupId>org.apache.tomcat.maven</groupId>
+		<artifactId>tomcat7-maven-plugin</artifactId>
+		<version>2.0</version>
+		<configuration>
+		    <url>http://172.16.167.176:8080/manager/text</url>
+		    <server>TomcatServer</server>
+		    <username>admin</username>
+		    <password>password</password>
+		    <update>true</update>
+		    <path>/petclinic</path>
+		</configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
